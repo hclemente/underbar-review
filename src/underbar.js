@@ -342,13 +342,21 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
-    //result object
-    //key = argument (equivalent to alreadyCalled from ONCE)
-  //value = result of calling the function (equivalent to result from ONCE)
-
-  //function(argument)
-    //using CONTAINS check if this function has been given argument already (by looking in result array)
-  // return the known result (return array at argument)
+    //We know we are somehow storing a single argument instead of an array of arguments in the memo.
+    //So add(1,2) = 3
+    //memoadd(1,3) = is falsely returning the stored value of '3' because it only stored 1
+    //momeadd(1,2,3,4,5,6,7,8,9) = would also falsely return a value of 3 because of the first argument.
+    var alreadyCalled = {};
+    //debugger;
+    return function () {
+      for (var i = 0; i < arguments.length; i++) {
+        // console.log(arguments);
+        if (alreadyCalled[arguments[i]] === undefined) { //If its a new arg
+          alreadyCalled[arguments[i]] = func.apply(this, arguments);
+        }
+        return alreadyCalled[arguments[i]];
+      }
+    };
   };
 
 
