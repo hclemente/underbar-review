@@ -117,6 +117,7 @@
   _.uniq = function(array, isSorted, iterator) {
     // create empty array
     var uniqueValues = [];
+    var uniqueIteratorValues = [];
     //no iterator case
     //if (iterator === undefined) { debugger; }
     if ( iterator === undefined && !isSorted) {
@@ -128,8 +129,9 @@
     } else {
       //iterator present
       _.each(array, function (value) {
-        if (!uniqueValues.includes(iterator(value))) {
-          uniqueValues.push(iterator(value));
+        if (!uniqueIteratorValues.includes(iterator(value))) {
+          uniqueValues.push(value);
+          uniqueIteratorValues.push(iterator(value));
         }
       });
     }
@@ -143,6 +145,11 @@
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
+    var results = [];
+    _.each(collection, function ( value ) {
+      results.push(iterator(value));
+    });
+    return results;
   };
 
   /*
