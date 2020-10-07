@@ -342,15 +342,13 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
-    // var results = [];
+    //result object
+    //key = argument (equivalent to alreadyCalled from ONCE)
+  //value = result of calling the function (equivalent to result from ONCE)
 
-
-
-    // return function()  {
-    //   if (results.contains()) {
-    //     results.push(func.apply(this, arguments));
-    // }
-
+  //function(argument)
+    //using CONTAINS check if this function has been given argument already (by looking in result array)
+  // return the known result (return array at argument)
   };
 
 
@@ -361,12 +359,14 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
-    debugger;
+    //debugger;
     var otherArgs = [];
     for (var i = 2; i < arguments.length; i++) {
       otherArgs.push(arguments[i]);
     }
-    setTimeout(func.apply(this, otherArgs), wait);
+    setTimeout(function() {
+      func.apply(this, otherArgs);
+    }, wait);
   };
 
 
@@ -381,7 +381,16 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var copyArray = array.slice();
+    var randArray = [];
 
+    while (copyArray.length > 0) {
+      var randIndex = Math.floor(Math.random() * copyArray.length);
+      randArray.push(copyArray[randIndex]);
+      copyArray.splice(randIndex, 1);
+    }
+
+    return randArray;
   };
 
 
